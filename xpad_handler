@@ -1,0 +1,13 @@
+#!/bin/bash
+
+ID=`xdotool getwindowfocus`
+
+CLASS=`xprop -id $ID WM_CLASS | awk '{print $3}' | sed 's/[",]//g'`
+
+#notify-send $CLASS
+if [ "$CLASS" == "xpad" ]; then
+#	killall xpad --signal SIGHUP 
+xpad -q
+else
+	i3-msg kill
+fi

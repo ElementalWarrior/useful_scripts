@@ -1,0 +1,26 @@
+#!/bin/sh
+PROFILEDIR=`mktemp -p /tmp -d tmp-fx-profile.XXXXXX.d`
+MY_PROFILE="yvwc47i0.default"
+
+# set up tmp profile with addons
+mkdir -p $PROFILEDIR/extensions
+cd ~/.mozilla/firefox/$MY_PROFILE/
+cp extensions/* $PROFILEDIR/extensions/
+cp addons.json extensions.json $PROFILEDIR/
+cp -R browser-extension-data $PROFILEDIR/
+
+# include existing cert overrides
+cp cert_override.txt $PROFILEDIR/
+
+# copy bookmarks
+cp places.sqlite $PROFILEDIR/
+
+# disable warning for opening chrome dev tools.
+echo 'user_pref("devtools.selfxss.count", 10);' > $PROFILEDIR/prefs.js
+
+#start firefox
+cd -
+firefox -profile $PROFILEDIR -no-remote -new-instance
+#cleanup
+rm -rf $PROFILEDIR
+

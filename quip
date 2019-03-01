@@ -1,0 +1,4 @@
+#!/bin/bash
+
+~/quip-linux-x64/quip &
+disown
